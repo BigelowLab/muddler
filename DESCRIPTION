@@ -1,0 +1,25 @@
+Package: muddler
+Type: Package
+Title: Tidymodels assistance
+Version: 0.0.1
+Authors@R: c(person("Tupper", "Ben", email = "btupper@bigelow.org", role = "cre"))
+Author: Omi Johnson <ojohnson@bigelow.org>
+Maintainer: Ben Tupper <btupper@bigelow.org>
+Description: Helpful functions for working with tidymodels.
+URL: https://github.com/BigelowLab/muddler
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.2.0)
+Imports:
+  rlang,
+  dplyr,
+  tidyr,
+  viridis,
+  bundle,
+  tidymodels,
+  vip,
+  ggplot2,
+  workflowsets
+Suggests:
+  tidysdm
+RoxygenNote: 7.3.2

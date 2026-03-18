@@ -1,2 +1,23 @@
-# muddler
-Helpful tools for working with tidymodels
+muddler
+================
+
+Helpful tools for working with tidymodels: extracting elements,
+plotting, saving *etc*.
+
+# Requirements
+
+- [R (v4.2+)](https://www.r-project.org/) \## Data wrangling
+- [rlang](https://CRAN.R-project.org/package=rlang)
+- [dplyr](https://CRAN.R-project.org/package=dplyr)
+- [tidyr](https://CRAN.R-project.org/package=tidyr) \## Modeling  
+- [tidymodels](https://CRAN.R-project.org/package=tidymodels)
+- [workflowsets](https://CRAN.R-project.org/package=workflowsets)
+- [bundle](https://CRAN.R-project.org/package=bundle)
+- [vip](https://CRAN.R-project.org/package=vip) \## Graphics
+- [viridis](https://CRAN.R-project.org/package=viridis)
+- [ggplot2](https://CRAN.R-project.org/package=ggplot2) \## Suggested
+- [tidysdm](https://CRAN.R-project.org/package=tidysdm)
+
+# Installation
+
+    remotes::install_github("BigelowLab/muddler")
