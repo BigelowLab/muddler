@@ -13,63 +13,46 @@ confmat_as_tibble = function(cm){
 }
 
 
-#' Plot confusion matrices
+#' Generate confusion matrices
 #' 
 #' Borrows heavily from the [yardstick package](https://github.com/tidymodels/yardstick/blob/51761c4e7a34e960949c75aeb2952ef02c408106/R/conf_mat.R#L421)
 #' 
-#' @param x fitted workflow or fitted workflow_set
+#' @export
+#' @param x fitted_workflowset
 #' @param truth,estimate see [yardstick::conf_mat()] for details, not required if `x` is a last_fit_set
-#' @return tibble with three elements: workflow, confmat, plot
-confmat = function(x, truth, estimate,
-                   ...){
+#' @return tibble with three elements: wflow_id, conf_mat, plot
+confmat = function(x, truth, estimate){
   
-  if (inherits(x, "last_fit_set")){
-    r = dplyr::rowwise(x) |>
-      dplyr::group_map(
-        function(row, key){
-          wflow = workflowsets::extract_workflow(row, row$wflow_id[1])
-          confmat()
-        }, keep = TRUE) |>
+  if (inherits(x, c("fitted_workflowset", "resample_results"))){
+    # we use lapply because group_map drops a class label
+    r = lapply(seq_along(nrow(x)),
+        function(irow){
+          row = x[irow,]
+          p = extract_predictions(row)
+          cm = yardstick::conf_mat(p, class, .pred_class)
+          dplyr::tibble(wflow_id = row$wflow_id,
+                        confmat = list(cm),
+                        plot = list(autoplot(cm, type = "heatmap") +
+                                      ggplot2::labs(title = row$wflow_id))
+                        )
+        }) |>
       dplyr::bind_rows()
     return(r)
+  } else {
+    stop("not implemented for class:", paste(class(x), collapse = ", "))
   }
   
-  mold = workflows::extract_mold(x)
-  newdata = recipes::bake(workflows::extract_recipe(x), mold$predictors)
-  outcomes = mold$outcomes |>
-    rlang::set_names("class")
-  
-  acc = yardstick::accuracy(outcomes, class, .pred_class)
-  
-  pp = x |>
-    dplyr::rowwise() |>
-    dplyr::group_map(
-      function(row, key){
-        wid = row |> dplyr::pull(1)
-        row$.predictions[[1]] |>
-          yardstick::conf_mat(class, .pred_class) |>
-          confmat_as_tibble() |>
-          dplyr::mutate(wflow_id = wid,
-                        .before = 1) |>
-          dplyr::mutate(.accuracy = dplyr::filter(acc, .data$wflow_id == wid) |>
-                          dplyr::pull(dplyr::all_of(".estimate")))
-        
-      }) |> 
-    dplyr::bind_rows() |>
-    dplyr::mutate(title = sprintf("%s (acc = %0.3f)", .data$wflow_id, .data$.accuracy))
-  
-  ggplot2::ggplot(data = pp,
-                  mapping = ggplot2::aes(x = .data$Truth,
-                                         y = .data$Prediction,
-                                         fill = .data$Freq ) ) +
-    ggplot2::geom_tile() +
-    ggplot2::scale_fill_gradient(low = "grey90",
-                                 high = "grey40") +
-    ggplot2::theme(
-      panel.background = ggplot2::element_blank(),
-      legend.position = "none" ) +
-    ggplot2::geom_text(
-      mapping = ggplot2::aes(label = .data$Freq) ) +
-    
-    ggplot2::facet_wrap(~title)
+ #ggplot2::ggplot(data = pp,
+ #                mapping = ggplot2::aes(x = .data$Truth,
+ #                                       y = .data$Prediction,
+ #                                       fill = .data$Freq ) ) +
+ #  ggplot2::geom_tile() +
+ #  ggplot2::scale_fill_gradient(low = "grey90",
+ #                               high = "grey40") +
+ #  ggplot2::theme(
+ #    panel.background = ggplot2::element_blank(),
+ #    legend.position = "none" ) +
+ #  ggplot2::geom_text(
+ #    mapping = ggplot2::aes(label = .data$Freq) ) +
+ #  ggplot2::facet_wrap(~title)
 }

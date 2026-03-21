@@ -2,17 +2,17 @@
 % Please edit documentation in R/confmat.R
 \name{confmat}
 \alias{confmat}
-\title{Given a table of model fits, plot the confusion matrices}
+\title{Generate confusion matrices}
 \usage{
-confmat(x, truth, estimate, ...)
+confmat(x, truth, estimate)
 }
 \arguments{
-\item{x}{fitted workflow or fitted workflow_set}
+\item{x}{fitted_workflowset}
 
-\item{truth, estimate}{see [yardstick::conf_mat()] for details}
+\item{truth, estimate}{see [yardstick::conf_mat()] for details, not required if `x` is a last_fit_set}
 }
 \value{
-tibble with three elements: workflow, confmat, plot
+tibble with three elements: wflow_id, conf_mat, plot
 }
 \description{
 Borrows heavily from the [yardstick package](https://github.com/tidymodels/yardstick/blob/51761c4e7a34e960949c75aeb2952ef02c408106/R/conf_mat.R#L421)

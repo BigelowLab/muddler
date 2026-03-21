@@ -6,7 +6,7 @@
 #' 
 #' @param wflow a workflow set with one or more workflows
 #' @param splitdata rsplit object with training and testing data
-#' @return a data frame of class "last_fit_set" with one or more  "last_fit" model objects 
+#' @return a data frame of class "fitted_workflowset" with one or more  trained workflows
 workflowset_selectomatic = function(wflow, splitdata){
   
   # fish out the best metrics per workflow
@@ -26,7 +26,7 @@ workflowset_selectomatic = function(wflow, splitdata){
     dplyr::bind_rows() |>
     dplyr::mutate(wflow_id =  wflow$wflow_id, .before = 1)
 
-  class(wflows) <- c("last_fit_set", class(wflows))
+  class(wflows) <- c("fitted_workflowset", class(wflows))
   return(wflows)
 }
 

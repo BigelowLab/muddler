@@ -13,12 +13,11 @@ Depends: R (>= 4.2.0)
 Imports:
   rlang,
   dplyr,
-  tidyr,
-  viridis,
   bundle,
-  tidymodels,
-  vip,
   ggplot2,
+  tune,
+  workflows,
+  yardstick,
   workflowsets
 Suggests:
   tidysdm

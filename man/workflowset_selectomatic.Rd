@@ -13,7 +13,7 @@ workflowset_selectomatic(wflow, splitdata)
 \item{splitdata}{rsplit object with training and testing data}
 }
 \value{
-a data frame with one or more  "last_fit" model objects
+a data frame of class "fitted_workflowset" with one or more  trained workflows
 }
 \description{
 Note that this wraps a number of important steps into one.  We provided this
