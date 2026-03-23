@@ -29,7 +29,7 @@ confmat = function(x, truth, estimate){
         function(irow){
           row = x[irow,]
           p = extract_predictions(row)
-          cm = yardstick::conf_mat(p, class, .pred_class)
+          cm = yardstick::conf_mat(p, .data$class, .data$.pred_class)
           dplyr::tibble(wflow_id = row$wflow_id,
                         confmat = list(cm),
                         plot = list(autoplot(cm, type = "heatmap") +

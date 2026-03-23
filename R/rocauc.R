@@ -13,8 +13,8 @@ rocauc = function(x,
     r = lapply(seq_along(nrow(x)),
                function(irow){
                  p = x[irow,]$.predictions[[1]]
-                 auc = yardstick::roc_auc(p, patch, .pred_1, event_level = "first")$.estimate
-                 roc = yardstick::roc_curve(p, patch, .pred_1, event_level = "first")
+                 auc = yardstick::roc_auc(p, .data$patch, .data$.pred_1, event_level = "first")$.estimate
+                 roc = yardstick::roc_curve(p, .data$patch, .data$.pred_1, event_level = "first")
                  plt =  roc |>
                    autoplot() +
                    ggplot2::labs(title = x[irow,]$wflow_id) + 
